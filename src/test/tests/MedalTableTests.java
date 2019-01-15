@@ -1,7 +1,6 @@
 package tests;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -9,9 +8,6 @@ import pages.MedalTablePage;
 import utilities.BrowserUtilities;
 import utilities.ConfigurationReader;
 import utilities.TestBase;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.testng.Assert.*;
 
@@ -21,6 +17,7 @@ public class MedalTableTests extends TestBase {
     @BeforeMethod
     public void setUpPages() {
         medalTablePage = new MedalTablePage();
+        driver.get(ConfigurationReader.getProperty("url"));
     }
     @AfterMethod
     public void wrapUpPages() {
@@ -42,7 +39,7 @@ public class MedalTableTests extends TestBase {
     @Test (priority = 1)
     public void sortTest() {
         // 1. Go to website https://en.wikipedia.org/wiki/2016_Summer_Olympics#Medal_table
-        driver.get(ConfigurationReader.getProperty("url"));
+
 
         // 2. Verify that by default the Medal table is sorted by rank.
             // a. Store the elements of Rank column in a String array
@@ -81,5 +78,33 @@ public class MedalTableTests extends TestBase {
                 assertFalse(ensuingRankingNumbers[i + 1] == ensuingRankingNumbers[i]+1);
             }
     }
+
+    /**
+     * Test Case 2: THE MOST
+     * 1.Write a method that returns the name of the country with the greatest number of gold medals.
+     * 2.Write a method that returns the name of the country with the greatest number of silver medals.
+     * 3.Write a method that returns the name of the country with the greatest number of bronze medals.
+     * 4.Write a method that returns the name of the country with the greatest number of medals.
+     */
+    @Test (priority = 2)
+    public void theMost() {
+        /*
+        Developed a method that takes three parameters
+        1. Column heading that is to be sorted (String, must match the heading exactly)
+        2. Boolean for the table to be in ascending (smallest number first) or not (highest number first)
+        3. Ranking (int) of the country that is seeked for
+        The method will return the String that will be the name of the country (NOC) as seen on the table
+         */
+        String theMostGold = medalTablePage.theMostCountry("Gold", false, 1).trim();
+        String theMostSilver = medalTablePage.theMostCountry("Silver", false, 1).trim();
+        String theMostBronze = medalTablePage.theMostCountry("Bronze", false, 1).trim();
+        String theMostTotal = medalTablePage.theMostCountry("Total", false, 1).trim();
+
+        assertEquals(theMostGold, "United States (USA)", "gold case");
+        assertEquals(theMostSilver, "United States (USA)", "gold case");
+        assertEquals(theMostBronze, "United States (USA)", "gold case");
+        assertEquals(theMostTotal, "United States (USA)", "gold case");
+    }
+
 
 }
