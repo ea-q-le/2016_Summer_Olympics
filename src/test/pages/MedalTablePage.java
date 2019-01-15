@@ -99,6 +99,22 @@ public class MedalTablePage {
         return retArr;
     }
 
+    /**
+     * Finds and returns the ranking of the country on the table, compared to other countries.
+     *
+     * @param countryName   String representation of the country name, can be a partial match
+     * @return              int representation of the country's ranking compared to others
+     */
+    public int getCountryIndex(String countryName) {
+        List<WebElement> countries = medalTableColumnElements("NOC");
+
+        for (int i = 0; i < countries.size(); i++)
+            if (countries.get(i).getText().contains(countryName))
+                return i+1;
+
+        return -1;
+    }
+
     public String getURL() { return URL; }
 
     public String getTitle() { return title; }

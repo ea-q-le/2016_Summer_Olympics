@@ -14,7 +14,7 @@ import java.util.Arrays;
 import static org.testng.Assert.*;
 
 public class MedalTableTests extends TestBase {
-    MedalTablePage medalTablePage;
+    private MedalTablePage medalTablePage;
 
     @BeforeMethod
     public void setUpPages() {
@@ -51,7 +51,7 @@ public class MedalTableTests extends TestBase {
             int[] initialRankingNumbers = BrowserUtilities.convertStringArrayToIntArray(initialRanking);
             // c. check for the int[] to be in ascending order
             for (int i = 0; i < initialRankingNumbers.length - 1; i++)
-                assertTrue(initialRankingNumbers[i + 1] == initialRankingNumbers[i]+1);
+                assertEquals(initialRankingNumbers[i + 1],initialRankingNumbers[i]+1);
 
         // 3. Click link NOC
         driver.findElement(By.cssSelector(".wikitable.sortable.plainrowheaders.jquery-tablesorter thead th:nth-child(2)")).click();
@@ -72,7 +72,7 @@ public class MedalTableTests extends TestBase {
             int[] ensuingRankingNumbers = BrowserUtilities.convertStringArrayToIntArray(ensuingRanking);
             // c. check for the int[] to be in ascending order
             for (int i = 0; i < ensuingRankingNumbers.length - 1; i++)
-                assertFalse(ensuingRankingNumbers[i + 1] == ensuingRankingNumbers[i]+1);
+                assertNotEquals(ensuingRankingNumbers[i + 1], ensuingRankingNumbers[i]+1);
     }
 
     /**
@@ -118,5 +118,27 @@ public class MedalTableTests extends TestBase {
         System.out.println(Arrays
                 .toString(medalTablePage
                         .countriesListByCriteria("Silver", false)));
+    }
+
+    /**
+     * Test Case 4: GET INDEX
+     * 1.Write a method that takes country name and returns the row and column number.
+     *   You decide the data type of the return.
+     */
+    @Test (priority = 4)
+    public void getIndex() {
+        /*
+        Developed a method that takes the country name and returns its index on the table.
+        The method is flexible and should the ranking criteria change, it will find the country's
+        new index amongst other countries (re: second assertion)
+         */
+        assertEquals(medalTablePage.getCountryIndex("France"), 7,
+                "France should be 7th amongst countries per default ranking.");
+
+        // to put the method to test, let's call another custom method and change the country rankings
+        // even though France comes 7th by default, it is 4th by Silver medals (descending)
+        medalTablePage.countriesListByCriteria("Silver", false);
+        assertEquals(medalTablePage.getCountryIndex("France"), 4,
+                "France comes 4th from top per the number of Silver medals");
     }
 }
