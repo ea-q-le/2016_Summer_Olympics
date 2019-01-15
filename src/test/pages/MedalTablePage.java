@@ -58,7 +58,7 @@ public class MedalTablePage {
     /**
      * Finds and returns the name of the country based on the parameters.
      *
-     * @param criteriaColumnHeading The String of column heading that is the return is to be based on
+     * @param criteriaColumnHeading The String of column heading that the return is to be based on
      * @param ascending             If true, table goes from the lowest to the highest, otherwise if false
      * @param ranking               Define the ranking of the country being requested
      * @return                      String of the table content under NOC column per provided criteria
@@ -77,6 +77,26 @@ public class MedalTablePage {
         List<WebElement> countries = medalTableColumnElements("NOC");
 
         return countries.get(ranking - 1).getText();
+    }
+
+    /**
+     * Finds and returns the names of the countries based on the parameters.
+     *
+     * @param criteriaColumnHeading The String of column heading that the return array is based on
+     * @param ascending             If true, table goes from the lowest to the highest, otherwise if false
+     * @return                      String array of table content under NOC column per provided criteria
+     */
+    public String[] countriesListByCriteria(String criteriaColumnHeading, boolean ascending) {
+        List<WebElement> countries = medalTableColumnElements("NOC");
+        String[] retArr = new String[countries.size() - 1];
+
+        for (int i = 0; i < retArr.length; i++) {
+            retArr[i] = theMostCountry(criteriaColumnHeading, ascending, i + 1);
+            if (ascending)
+                ascending = false;
+        }
+
+        return retArr;
     }
 
     public String getURL() { return URL; }

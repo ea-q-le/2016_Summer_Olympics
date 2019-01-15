@@ -9,6 +9,8 @@ import utilities.BrowserUtilities;
 import utilities.ConfigurationReader;
 import utilities.TestBase;
 
+import java.util.Arrays;
+
 import static org.testng.Assert.*;
 
 public class MedalTableTests extends TestBase {
@@ -48,10 +50,8 @@ public class MedalTableTests extends TestBase {
             // b. convert the String [] into int[] to help with comparison
             int[] initialRankingNumbers = BrowserUtilities.convertStringArrayToIntArray(initialRanking);
             // c. check for the int[] to be in ascending order
-            for (int i = 0; i < initialRankingNumbers.length - 1; i++) {
-                System.out.println(initialRankingNumbers[i] + " vs " + initialRankingNumbers[i+1]);
+            for (int i = 0; i < initialRankingNumbers.length - 1; i++)
                 assertTrue(initialRankingNumbers[i + 1] == initialRankingNumbers[i]+1);
-            }
 
         // 3. Click link NOC
         driver.findElement(By.cssSelector(".wikitable.sortable.plainrowheaders.jquery-tablesorter thead th:nth-child(2)")).click();
@@ -61,10 +61,8 @@ public class MedalTableTests extends TestBase {
             String[] initialCountryNames = BrowserUtilities.elementsToStringArray(
                     medalTablePage.medalTableColumnElements("NOC") );
             // b. Utilizing String's .compareTo() method, verify country names are listed alphabetically
-            for (int i = 0; i < initialCountryNames.length - 1; i++) {
-                System.out.println(initialCountryNames[i] + " vs " + initialCountryNames[i+1]);
+            for (int i = 0; i < initialCountryNames.length - 1; i++)
                 assertTrue(initialCountryNames[i].compareTo(initialCountryNames[i + 1]) < 1);
-            }
 
         // 5. Verify that Rank column is not in ascending order anymore.
             // a. Store the elements of Rank column in a String array
@@ -73,10 +71,8 @@ public class MedalTableTests extends TestBase {
             // b. convert the String [] into int[] to help with comparison
             int[] ensuingRankingNumbers = BrowserUtilities.convertStringArrayToIntArray(ensuingRanking);
             // c. check for the int[] to be in ascending order
-            for (int i = 0; i < ensuingRankingNumbers.length - 1; i++) {
-                System.out.println(ensuingRankingNumbers[i] + " vs " + ensuingRankingNumbers[i+1]);
+            for (int i = 0; i < ensuingRankingNumbers.length - 1; i++)
                 assertFalse(ensuingRankingNumbers[i + 1] == ensuingRankingNumbers[i]+1);
-            }
     }
 
     /**
@@ -101,10 +97,26 @@ public class MedalTableTests extends TestBase {
         String theMostTotal = medalTablePage.theMostCountry("Total", false, 1).trim();
 
         assertEquals(theMostGold, "United States (USA)", "gold case");
-        assertEquals(theMostSilver, "United States (USA)", "gold case");
-        assertEquals(theMostBronze, "United States (USA)", "gold case");
-        assertEquals(theMostTotal, "United States (USA)", "gold case");
+        assertEquals(theMostSilver, "United States (USA)", "silver case");
+        assertEquals(theMostBronze, "United States (USA)", "bronze case");
+        assertEquals(theMostTotal, "United States (USA)", "total case");
     }
 
-
+    /**
+     * Test Case 3: COUNTRY BY MEDAL
+     * 1.Write a method that returns a list of countries by their silver medal count. You decide the
+     *  data type of the return.
+     */
+    @Test (priority = 3)
+    public void countryByMedal() {
+        /*
+        Developed a method that takes two parameters:
+        1. Column heading that is to be sorted (String, must match the heading exactly)
+        2. Boolean for the table to be in ascending (smallest number first) or not (highest number first)
+        The method will return String [] elements of which are the names of countries per criteria.
+         */
+        System.out.println(Arrays
+                .toString(medalTablePage
+                        .countriesListByCriteria("Silver", false)));
+    }
 }
