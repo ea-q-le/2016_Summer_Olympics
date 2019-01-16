@@ -117,7 +117,8 @@ public class MedalTableTests extends TestBase {
          */
         System.out.println(Arrays
                 .toString(medalTablePage
-                        .countriesListByCriteria("Silver", false)));
+                        .countriesListByCriteria("Silver", false))
+                            + "\n\n\n");
     }
 
     /**
@@ -151,9 +152,17 @@ public class MedalTableTests extends TestBase {
      */
     @Test (priority = 5)
     public void getSum() {
-//        System.out.println(Arrays.deepToString((medalTablePage.getMedalPerCountry("Gold"))));
-//        System.out.println(Arrays.toString(
-//                BrowserUtilities.convert2DArray2ndArrayIntoIntArray(medalTablePage.getMedalPerCountry("Gold"))));
-        System.out.println(medalTablePage.getSumPerMedalCount("Total", 3));
+        /*
+        Developed a method that takes the medal type and the total number of medals requested
+        and returns the names and number of medals of two countries that have the requested amount
+        of total medals.
+        If there are no two countries with exact total, the method will return the two countries
+        that have the CLOSEST sum of medals to the requested amount.
+        */
+        // due to previous test cases, this code may break. Thus, reset the ranking first
+        medalTablePage.countriesListByCriteria("Rank", true);
+
+        // then, proceed to checking the method
+        System.out.println(medalTablePage.getSumPerMedalCount("Bronze", 18));
     }
 }

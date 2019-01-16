@@ -116,7 +116,14 @@ public class MedalTablePage {
         return -1;
     }
 
-    //TODO
+    /**
+     * Generates a 2-dimensional String[] that stores the country and their medal listings in ascending
+     * order. Each element of the String[][] is another String[] that holds country name as the first
+     * element and number of medals of that country as the second.
+     *
+     * @param criteria  String representation of the medal type
+     * @return          2D String[] that holds country names and respective number of medals
+     */
     public String[][] getMedalPerCountry(String criteria) {
         String[] countryNames = countriesListByCriteria(criteria, true);
         String[] medalStrings = BrowserUtilities.elementsToStringArray(
@@ -133,20 +140,46 @@ public class MedalTablePage {
         return retArr;
     }
 
-    //TODO
+    /**
+     * Generates a String message based on the medal criteria and how many total medals are requested.
+     * The method will return the country information that has the lowest amount of medals should the
+     * sum requested is less than that country's medal achievements.
+     * It will try to return the String representation of 2 country information with their respective
+     * medal counts that sum up exactly to the amount requested.
+     * However, should the method fail to do as stated above, it will return the information of two
+     * countries that have the closest amount of total medals to the requested sum.
+     *
+     * @param criteria          String representation of the type of medal being requested
+     * @param sumRequested      int number of total medals being requested
+     * @return                  String return of information on the output
+     */
     public String getSumPerMedalCount(String criteria, int sumRequested) {
         String[][] initData = getMedalPerCountry(criteria);
         int[] workArr = BrowserUtilities.convert2DArray2ndArrayIntoIntArray(initData);
         int sum = -1;
+        int closestMatchI = 0, closestMatchJ = 0;
         String retStr = "You requested " + criteria + " medals to the total count of " + sumRequested + ". We found: ";
 
         if (sumRequested < workArr[0])
-            throw new NoSuchElementException(retStr + "the minimum medal count is " + workArr[0] + ". You requested " + sumRequested);
+            return retStr + "the minimum medal count is " + workArr[0] + ". You requested " + sumRequested;
 
         if (sumRequested == workArr[0])
             return retStr + Arrays.toString(initData[0]);
 
-        return null;
+        for (int i = 0; i < workArr.length - 1; i++)
+            for (int j = i + 1; j < workArr.length; j++)
+                if (workArr[i] + workArr[j] == sumRequested) {
+                    return retStr + "\n" + Arrays.toString(initData[i]) + "\n" + Arrays.toString(initData[j]);
+                }else {
+                    if ( Math.abs(sum - sumRequested) > Math.abs(workArr[i] + workArr[j] - sumRequested) ) {
+                        sum = workArr[i] + workArr[j];
+                        closestMatchI = i;
+                        closestMatchJ = j;
+                    }
+                }
+
+        return retStr + " no exact matches. \nHowever, these closest total of two countries is " + sum + " of " +
+                "\n\t\t" + Arrays.toString(initData[closestMatchI]) + "\n\t\t" + Arrays.toString(initData[closestMatchJ]);
     }
 
     public String getURL() { return URL; }
