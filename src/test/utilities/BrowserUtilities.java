@@ -89,4 +89,30 @@ public class BrowserUtilities {
         return retArr;
     }
 
+    /**
+     * Accepts 2D String array. Assumes that the first element of each sub-array is country name
+     * and the second element is the number of medals. Converts each second element into int and
+     * returns one dimensional int array.
+     *
+     * @param str2D     Two dimensional String[][]
+     * @return          int[]
+     */
+    public static int[] convert2DArray2ndArrayIntoIntArray(String[][] str2D) {
+        int[] retArr = new int[str2D.length];
+
+        for (int i = 0; i < retArr.length; i++) {
+            for (int y = 0; y < str2D[i][1].length(); y++) {
+                if (!Character.isDigit(str2D[i][1].charAt(y)))
+                    str2D[i][1] = str2D[i][1].substring(0, y);
+                else
+                    continue;
+            }
+            if (str2D[i][1].isEmpty())
+                retArr[i] = 0;
+            else
+                retArr[i] = Integer.parseInt(str2D[i][1]);
+        }
+
+        return retArr;
+    }
 }

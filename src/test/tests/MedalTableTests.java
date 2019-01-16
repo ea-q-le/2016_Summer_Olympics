@@ -132,6 +132,9 @@ public class MedalTableTests extends TestBase {
         The method is flexible and should the ranking criteria change, it will find the country's
         new index amongst other countries (re: second assertion)
          */
+        // due to previous test cases, this code may break. Thus, reset the ranking first
+        medalTablePage.countriesListByCriteria("Rank", true);
+        // then, proceed to checking the method
         assertEquals(medalTablePage.getCountryIndex("France"), 7,
                 "France should be 7th amongst countries per default ranking.");
 
@@ -140,5 +143,17 @@ public class MedalTableTests extends TestBase {
         medalTablePage.countriesListByCriteria("Silver", false);
         assertEquals(medalTablePage.getCountryIndex("France"), 4,
                 "France comes 4th from top per the number of Silver medals");
+    }
+
+    /**
+     * Test Case 5: GET SUM
+     * 1. Write a method that returns a list of two countries whose sum of bronze medals is 18.
+     */
+    @Test (priority = 5)
+    public void getSum() {
+//        System.out.println(Arrays.deepToString((medalTablePage.getMedalPerCountry("Gold"))));
+//        System.out.println(Arrays.toString(
+//                BrowserUtilities.convert2DArray2ndArrayIntoIntArray(medalTablePage.getMedalPerCountry("Gold"))));
+        System.out.println(medalTablePage.getSumPerMedalCount("Total", 3));
     }
 }

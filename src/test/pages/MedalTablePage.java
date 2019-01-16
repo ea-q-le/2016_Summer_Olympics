@@ -8,6 +8,7 @@ import utilities.BrowserUtilities;
 import utilities.ConfigurationReader;
 import utilities.Driver;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -113,6 +114,39 @@ public class MedalTablePage {
                 return i+1;
 
         return -1;
+    }
+
+    //TODO
+    public String[][] getMedalPerCountry(String criteria) {
+        String[] countryNames = countriesListByCriteria(criteria, true);
+        String[] medalStrings = BrowserUtilities.elementsToStringArray(
+                medalTableColumnElements(criteria));
+
+        String[] medalsCount = Arrays.copyOfRange(medalStrings, 0, countryNames.length);
+
+        String[][] retArr = new String[countryNames.length][2];
+        for (int i = 0; i < retArr.length; i++) {
+            retArr[i][0] = countryNames[i].trim();
+            retArr[i][1] = medalsCount[i];
+        }
+
+        return retArr;
+    }
+
+    //TODO
+    public String getSumPerMedalCount(String criteria, int sumRequested) {
+        String[][] initData = getMedalPerCountry(criteria);
+        int[] workArr = BrowserUtilities.convert2DArray2ndArrayIntoIntArray(initData);
+        int sum = -1;
+        String retStr = "You requested " + criteria + " medals to the total count of " + sumRequested + ". We found: ";
+
+        if (sumRequested < workArr[0])
+            throw new NoSuchElementException(retStr + "the minimum medal count is " + workArr[0] + ". You requested " + sumRequested);
+
+        if (sumRequested == workArr[0])
+            return retStr + Arrays.toString(initData[0]);
+
+        return null;
     }
 
     public String getURL() { return URL; }
