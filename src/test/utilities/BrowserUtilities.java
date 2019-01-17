@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
+import java.util.Set;
 
 public class BrowserUtilities {
 
@@ -114,5 +115,17 @@ public class BrowserUtilities {
         }
 
         return retArr;
+    }
+
+    //TODO
+    public static void windowSwitcher(int index) {
+        WebDriver driver = Driver.getDriver();
+
+        Set<String> handles = driver.getWindowHandles();
+
+        int i = 1;
+        for (String handle : handles)
+            if (i++ == index)
+                driver.switchTo().window(handle);
     }
 }
