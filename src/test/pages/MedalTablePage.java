@@ -1,7 +1,6 @@
 package pages;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utilities.BrowserUtilities;
@@ -23,10 +22,10 @@ public class MedalTablePage {
     @FindBy (css = ".wikitable.sortable.plainrowheaders.jquery-tablesorter")
     public WebElement medalTable;
 
-    @FindAll(@FindBy (css = ".wikitable.sortable.plainrowheaders.jquery-tablesorter thead th"))
+    @FindBy (css = ".wikitable.sortable.plainrowheaders.jquery-tablesorter thead th")
     public List<WebElement> medalTableHeadings;
 
-    @FindAll(@FindBy (css = ".wikitable.sortable.plainrowheaders.jquery-tablesorter tbody tr"))
+    @FindBy (css = ".wikitable.sortable.plainrowheaders.jquery-tablesorter tbody tr")
     public List<WebElement> medalTableRows;
 
     /**
